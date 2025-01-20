@@ -9,7 +9,7 @@ permissions:
 jobs:
   build-e2e-images:
     name: Build & Run E2E Images
-    runs-on: [self-hosted, linux, X64, jammy, large]
+    runs-on: [self-hosted, linux, X64, jammy, xlarge]
     steps:
       -
         name: Login to GitHub Container Registry
@@ -112,3 +112,7 @@ jobs:
       - name: Run e2e tests
         run: |
           sudo GINKGO_FOCUS="${{ matrix.ginkgo_focus }}" SKIP_RESOURCE_CLEANUP=true make test-e2e
+
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: canonical/action-tmate@main
